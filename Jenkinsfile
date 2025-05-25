@@ -45,7 +45,6 @@ pipeline {
       steps {
         sh '''
           npm install netlify-cli@20.1.1
-          export PATH=$(npm bin):$PATH
           netlify --version
         '''
       }
