@@ -50,9 +50,6 @@ pipeline {
       }
       steps {
         sh '''
-          echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-          echo "nameserver 1.1.1.1" >> /etc/resolv.conf
-
           npm install netlify-cli
           ./node_modules/.bin/netlify --version
           echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
@@ -72,9 +69,6 @@ pipeline {
       }
       steps {
         sh '''
-          echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-          echo "nameserver 1.1.1.1" >> /etc/resolv.conf
-
           npm install netlify-cli
           ./node_modules/.bin/netlify --version
           echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
