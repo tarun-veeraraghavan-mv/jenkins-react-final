@@ -16,15 +16,18 @@ pipeline {
           npm --version
           npm i
           npm run build
+          npm run test
           ls -la
         '''
       }
     }
     stage("Test") {
-    steps {
-      echo "Test stops"
+      steps {
+        sh '''
+          test -f build/index.html
+        '''
+      }
     }
-  }
   }
   
 }
