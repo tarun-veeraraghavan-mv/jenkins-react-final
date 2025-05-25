@@ -45,10 +45,14 @@ pipeline {
         docker {
           image 'node:18-alpine'
           reuseNode true
+          args '--network=host'
         }
       }
       steps {
         sh '''
+          echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+          echo "nameserver 1.1.1.1" >> /etc/resolv.conf
+
           npm install netlify-cli
           ./node_modules/.bin/netlify --version
           echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
@@ -63,10 +67,14 @@ pipeline {
         docker {
           image 'node:18-alpine'
           reuseNode true
+          args '--network=host'
         }
       }
       steps {
         sh '''
+          echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+          echo "nameserver 1.1.1.1" >> /etc/resolv.conf
+
           npm install netlify-cli
           ./node_modules/.bin/netlify --version
           echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
@@ -74,6 +82,18 @@ pipeline {
           ./node_modules/.bin/netlify deploy --dir=dist --prod
         '''
       }
+    }
+  }
+
+  post {
+    always {
+      echo 'Pipeline completed'
+    }
+    success {
+      echo 'Pipeline succeeded!'
+    }
+    failure {
+      echo 'Pipeline failed!'
     }
   }
   
