@@ -106,6 +106,11 @@ pipeline {
           reuseNode true
         }
       }
+
+      environment {
+        DEPLOY_URL = "https://shiny-duckanoo-51c471.netlify.app"
+      }
+
       steps {
         sh '''
           npx playwright test 
