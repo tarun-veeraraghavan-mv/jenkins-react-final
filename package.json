@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:ui": "vitest --ui",
-    "test:e2e": "npx playwright test"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "react": "^18.3.1",
