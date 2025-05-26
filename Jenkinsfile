@@ -49,7 +49,7 @@ pipeline {
       steps {
         sh '''
           npm i serve
-          node_modules/.bin/serve -s dist &
+          node_modules/.bin/serve -s dist -p 5173 &
           npx playwright test 
         '''
       }
