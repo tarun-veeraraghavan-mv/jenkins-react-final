@@ -68,7 +68,7 @@ pipeline {
           ./node_modules/.bin/netlify --version
           echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
           ./node_modules/.bin/netlify status
-          ./node_modules/.bin/netlify deploy --dir=dist
+          ./node_modules/.bin/netlify deploy --dir=dist --json
         '''
       }
     }
@@ -117,10 +117,7 @@ pipeline {
           // this makes it more reliable than just `ENV_VAR=value command`
           withEnv(["DEPLOY_URL=${DEPLOY_URL}"]) {
             sh '''
-              # Optional: Add a debug print inside the shell to confirm the env var is visible
               echo "Inside Prod E2E shell, DEPLOY_URL is: $DEPLOY_URL"
-
-              # Run Playwright tests. It should now pick up DEPLOY_URL from its process environment.
               npx playwright test
             '''
           }
