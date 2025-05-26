@@ -113,7 +113,7 @@ pipeline {
 
       steps {
         sh '''
-          npx playwright test 
+          DEPLOY_URL="$DEPLOY_URL" npx playwright test 
         '''
       }
     }
