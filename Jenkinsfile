@@ -73,6 +73,33 @@ pipeline {
           ./node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json
         '''
       }
+      script {
+        env.STAGING_URL = sh(script: "./node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json", returnStdout: true)
+      }
+    }
+
+    stage("Staging E2E testing") {
+      agent {
+        docker {
+          image 'mcr.microsoft.com/playwright:v1.52.0-jammy'
+          reuseNode true
+        }
+      }
+
+      environment {
+        DEPLOY_URL = "${env.STAGING_URL}"
+      }
+
+      steps {
+        script { 
+          withEnv(["DEPLOY_URL=${DEPLOY_URL}"]) {
+            sh '''
+              echo "Inside Prod E2E shell, DEPLOY_URL is: $DEPLOY_URL"
+              npx playwright test
+            '''
+          }
+        }
+      }
     }
 
     stage("Approval") {
@@ -114,9 +141,7 @@ pipeline {
       }
 
       steps {
-        script { // Use a script block to allow for more complex Groovy logic
-          // Use withEnv to explicitly set the environment variable for the shell context
-          // this makes it more reliable than just `ENV_VAR=value command`
+        script { 
           withEnv(["DEPLOY_URL=${DEPLOY_URL}"]) {
             sh '''
               echo "Inside Prod E2E shell, DEPLOY_URL is: $DEPLOY_URL"
