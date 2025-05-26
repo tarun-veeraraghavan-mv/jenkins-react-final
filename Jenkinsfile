@@ -25,7 +25,7 @@ pipeline {
         '''
       }
     }
-    stage("Test") {
+    stage("Unit testing") {
       agent {
         docker {
           image 'node:18-alpine'
@@ -39,7 +39,19 @@ pipeline {
         '''
       }
     }
-
+    stage("E2E testing") {
+      agent {
+        docker {
+          image 'node:18-alpine'
+          reuseNode true
+        }
+      }
+      steps {
+        sh '''
+          npm run test:e2e
+        '''
+      }
+    }
     stage("Deploy staging") {
       agent {
         docker {
