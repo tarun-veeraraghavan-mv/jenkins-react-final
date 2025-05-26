@@ -112,9 +112,19 @@ pipeline {
       }
 
       steps {
-        sh '''
-          npx playwright test 
-        '''
+        script { // Use a script block to allow for more complex Groovy logic
+          // Use withEnv to explicitly set the environment variable for the shell context
+          // this makes it more reliable than just `ENV_VAR=value command`
+          withEnv(["DEPLOY_URL=${DEPLOY_URL}"]) {
+            sh '''
+              # Optional: Add a debug print inside the shell to confirm the env var is visible
+              echo "Inside Prod E2E shell, DEPLOY_URL is: $DEPLOY_URL"
+
+              # Run Playwright tests. It should now pick up DEPLOY_URL from its process environment.
+              npx playwright test
+            '''
+          }
+        }
       }
     }
   }
