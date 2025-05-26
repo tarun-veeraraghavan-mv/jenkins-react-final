@@ -48,7 +48,6 @@ pipeline {
       }
       steps {
         sh '''
-          npm ci
           npm run test:e2e
         '''
       }
